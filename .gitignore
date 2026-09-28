@@ -1,0 +1,34 @@
+# ============================================================
+#  Terasic 参考资源 —— 大文件 + 极深路径, 不进 git
+#   (SystemCD 解压目录是 Windows 下 MAX_PATH 超限的根源;
+#    压缩包 186MB 二进制也不该入库, 本地保留即可)
+# ============================================================
+/DE1-SoC_v.5.1.3_HWrevF.revG_SystemCD/
+/DE1-SoC_v.5.1.3_HWrevF.revG_SystemCD.zip
+
+# ============================================================
+#  Quartus Prime 构建产物 —— 可再生, 一律忽略
+#   (保留: *.v *.sv *.svh *.qpf *.qsf *.sdc *.tcl 等源文件)
+# ============================================================
+db/
+incremental_db/
+output_files/
+simulation/
+*.qws
+*.bak
+*.rpt
+*.sof
+*.pof
+*.jdi
+*.smsg
+*.summary
+*.qdf
+c5_pin_model_dump.txt
+quartus_nativelink_synthesis.log
+qt_visualize.log
+
+# ============================================================
+#  通用垃圾
+# ============================================================
+Thumbs.db
+.DS_Store
