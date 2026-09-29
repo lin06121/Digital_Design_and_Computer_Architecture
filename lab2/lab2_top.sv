@@ -68,10 +68,22 @@ module full_adder (
     input  logic a, b, cin,
     output logic sum, cout
 );
-    logic axb;                    // a XOR b 的中间量
-    assign axb  = a ^ b;
-    assign sum  = axb ^ cin;
-    assign cout = (a & b) | (cin & axb);
+    // TODO(你来完成): 从真值表推导 sum 和 cout 的最简逻辑。
+    //   a b cin | sum  cout
+    //   0 0  0  |  0    0
+    //   0 0  1  |  1    0
+    //   0 1  0  |  1    0
+    //   0 1  1  |  0    1
+    //   1 0  0  |  1    0
+    //   1 0  1  |  0    1
+    //   1 1  0  |  0    1
+    //   1 1  1  |  1    1
+    //   提示1: sum 检测"1 的个数是否为奇数" => 异或链 a^b^cin
+    //   提示2: cout 是"至少两个输入为 1"(多数表决)
+    //
+    //   下面两行留空, 用 assign 写出来 (或改用 xor/and/or 门实例化):
+    //   assign sum  = ?;
+    //   assign cout = ?;
 endmodule
 
 
@@ -84,17 +96,20 @@ module ripple_carry_adder #(parameter W = 4) (
     output logic [W-1:0] sum,
     output logic         cout
 );
-    logic [W:0] carry;
+    logic [W:0] carry;          // carry[0]=最低位进位(接 cin), carry[W]=最高位溢出(cout)
     assign carry[0] = cin;
+
+    // TODO(你来完成): 复用上面的 full_adder, 实例化 W 个, 把 carry 链和 sum 接起来。
+    //   第 i 个实例的连接方式:
+    //     .a(a[i])  .b(b[i])  .cin(carry[i])  .sum(sum[i])  .cout(carry[i+1])
+    //   用 generate-for 逐位生成。
     genvar i;
     generate
-        for (i = 0; i < W; i = i + 1) begin : gen_fa
-            full_adder fa (
-                .a(a[i]), .b(b[i]), .cin(carry[i]),
-                .sum(sum[i]), .cout(carry[i+1])
-            );
-        end
+        // for (...) begin : gen_fa
+        //     full_adder fa (...);
+        // end
     endgenerate
+
     assign cout = carry[W];
 endmodule
 
