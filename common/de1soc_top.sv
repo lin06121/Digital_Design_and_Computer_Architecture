@@ -16,9 +16,9 @@
 `default_nettype none
 
 module de1soc_top (
-    input  logic        CLOCK_50,      // 50 MHz
-    input  logic [9:0]  SW,            // 滑动开关 (电平输入)
-    input  logic [3:0]  KEY,           // 按键, 低有效; [0] 作异步复位
+    input  wire         CLOCK_50,      // 50 MHz
+    input  wire  [9:0]  SW,            // 滑动开关 (电平输入)
+    input  wire  [3:0]  KEY,           // 按键, 低有效; [0] 作异步复位
     output logic [9:0]  LEDR,          // 红 LED, 高有效
     output logic [6:0]  HEX0, HEX1, HEX2,   // 六位七段码, 段低有效 (共阳)
     output logic [6:0]  HEX3, HEX4, HEX5,
@@ -134,7 +134,7 @@ endmodule
 
 // ------------- 复位同步器: 异步低有效, 同步释放 (两级) -------------
 module reset_sync #(parameter STAGES = 2) (
-    input  logic clk, async_n,
+    input  wire  clk, async_n,
     output logic rst_n
 );
     logic [STAGES-1:0] sr;
@@ -146,7 +146,7 @@ endmodule
 
 // ------------- 两级同步器 (单 bit, 防亚稳态) -------------
 module sync2 #(parameter STAGES = 2) (
-    input  logic clk, rst_n, d,
+    input  wire  clk, rst_n, d,
     output logic q
 );
     logic [STAGES-1:0] sr;
@@ -158,7 +158,7 @@ endmodule
 
 // ------------- 消抖: 输入保持稳定 N 个周期后才输出 -------------
 module debounce #(parameter N = 20'd100_000) (
-    input  logic clk, rst_n, in,
+    input  wire  clk, rst_n, in,
     output logic out
 );
     logic in_reg;
@@ -175,8 +175,8 @@ module debounce #(parameter N = 20'd100_000) (
 endmodule
 
 // ------------- 时钟分频: 每 DIV 周期产出一拍 tick (用 tick 而非门控时钟) -------------
-module clk_en_div #(parameter DIV = 25'd50_000_000) (
-    input  logic clk, rst_n,
+module clk_en_div #(parameter DIV = 32'd50_000_000) (
+    input  wire  clk, rst_n,
     output logic tick
 );
     logic [31:0] cnt;
@@ -189,7 +189,7 @@ endmodule
 
 // ------------- 共阳七段译码: hex -> seg[6:0]={g,f,e,d,c,b,a}, 段低有效 -------------
 module sevenseg (
-    input  logic [3:0] hex,
+    input  wire  [3:0] hex,
     output logic [6:0] seg
 );
     always_comb
@@ -218,7 +218,7 @@ module vga_timing #(
     parameter H_ACTIVE = 640, H_FRONT = 16, H_SYNC = 96, H_BACK = 48, // 一行 800
     parameter V_ACTIVE = 480, V_FRONT = 10, V_SYNC = 2,  V_BACK = 33  // 一帧 525
 )(
-    input  logic clk, rst_n,
+    input  wire  clk, rst_n,
     output logic hsync, vsync, active,
     output logic [10:0] hcount, vcount
 );
