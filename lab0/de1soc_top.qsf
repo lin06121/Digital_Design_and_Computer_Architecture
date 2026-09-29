@@ -76,20 +76,20 @@ set_location_assignment PIN_AF14 -to CLOCK_50
 # -------- 滑动开关 SW (电平输入, 无硬件消抖) --------
 set_location_assignment PIN_AB12 -to SW[0]
 set_location_assignment PIN_AC12 -to SW[1]
-set_location_assignment PIN_AF9  -to SW[2]
+set_location_assignment PIN_AF9 -to SW[2]
 set_location_assignment PIN_AF10 -to SW[3]
 set_location_assignment PIN_AD11 -to SW[4]
 set_location_assignment PIN_AD12 -to SW[5]
 set_location_assignment PIN_AE11 -to SW[6]
-set_location_assignment PIN_AC9  -to SW[7]
+set_location_assignment PIN_AC9 -to SW[7]
 set_location_assignment PIN_AD10 -to SW[8]
 set_location_assignment PIN_AE12 -to SW[9]
 
 # -------- 按键 KEY (低有效: 按下=0; 板上 Schmitt 触发器已消抖) --------
 set_location_assignment PIN_AA14 -to KEY[0]
 set_location_assignment PIN_AA15 -to KEY[1]
-set_location_assignment PIN_W15  -to KEY[2]
-set_location_assignment PIN_Y16  -to KEY[3]
+set_location_assignment PIN_W15 -to KEY[2]
+set_location_assignment PIN_Y16 -to KEY[3]
 
 # -------- 红 LED (高有效) --------
 set_location_assignment PIN_V16 -to LEDR[0]
@@ -138,16 +138,16 @@ set_location_assignment PIN_AB25 -to HEX3[5]
 set_location_assignment PIN_AB22 -to HEX3[6]
 # HEX4
 set_location_assignment PIN_AA24 -to HEX4[0]
-set_location_assignment PIN_Y23  -to HEX4[1]
-set_location_assignment PIN_Y24  -to HEX4[2]
-set_location_assignment PIN_W22  -to HEX4[3]
-set_location_assignment PIN_W24  -to HEX4[4]
-set_location_assignment PIN_V23  -to HEX4[5]
-set_location_assignment PIN_W25  -to HEX4[6]
+set_location_assignment PIN_Y23 -to HEX4[1]
+set_location_assignment PIN_Y24 -to HEX4[2]
+set_location_assignment PIN_W22 -to HEX4[3]
+set_location_assignment PIN_W24 -to HEX4[4]
+set_location_assignment PIN_V23 -to HEX4[5]
+set_location_assignment PIN_W25 -to HEX4[6]
 # HEX5
-set_location_assignment PIN_V25  -to HEX5[0]
+set_location_assignment PIN_V25 -to HEX5[0]
 set_location_assignment PIN_AA28 -to HEX5[1]
-set_location_assignment PIN_Y27  -to HEX5[2]
+set_location_assignment PIN_Y27 -to HEX5[2]
 set_location_assignment PIN_AB27 -to HEX5[3]
 set_location_assignment PIN_AB26 -to HEX5[4]
 set_location_assignment PIN_AA26 -to HEX5[5]
@@ -162,7 +162,7 @@ set_location_assignment PIN_C12 -to VGA_R[4]
 set_location_assignment PIN_D12 -to VGA_R[5]
 set_location_assignment PIN_E12 -to VGA_R[6]
 set_location_assignment PIN_F13 -to VGA_R[7]
-set_location_assignment PIN_J9  -to VGA_G[0]
+set_location_assignment PIN_J9 -to VGA_G[0]
 set_location_assignment PIN_J10 -to VGA_G[1]
 set_location_assignment PIN_H12 -to VGA_G[2]
 set_location_assignment PIN_G10 -to VGA_G[3]
@@ -183,3 +183,7 @@ set_location_assignment PIN_F10 -to VGA_BLANK_N
 set_location_assignment PIN_C10 -to VGA_SYNC_N
 set_location_assignment PIN_B11 -to VGA_HS
 set_location_assignment PIN_D11 -to VGA_VS
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
