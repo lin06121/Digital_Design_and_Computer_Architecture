@@ -19,7 +19,7 @@
 `default_nettype none
 
 module lab2_top (
-    input  logic [9:0]  SW,
+    input  wire [9:0]  SW,
     output logic [9:0]  LEDR,
     output logic [6:0]  HEX0, HEX1, HEX2, HEX3, HEX4, HEX5
 );
@@ -65,7 +65,7 @@ endmodule
 //   cout = (a AND b) OR (cin AND (a XOR b))
 //====================================================================
 module full_adder (
-    input  logic a, b, cin,
+    input  wire a, b, cin,
     output logic sum, cout
 );
     // TODO(你来完成): 从真值表推导 sum 和 cout 的最简逻辑。
@@ -84,6 +84,8 @@ module full_adder (
     //   下面两行留空, 用 assign 写出来 (或改用 xor/and/or 门实例化):
     //   assign sum  = ?;
     //   assign cout = ?;
+    assign sum  = a ^ b ^ cin;
+    assign cout = (a & b) | (cin & (a ^ b));
 endmodule
 
 
@@ -91,8 +93,8 @@ endmodule
 // N 位行波进位加法器 —— 把 N 个 1 位全加器首尾相连 (carry 链)
 //====================================================================
 module ripple_carry_adder #(parameter W = 4) (
-    input  logic [W-1:0] a, b,
-    input  logic         cin,
+    input  wire [W-1:0] a, b,
+    input  wire         cin,
     output logic [W-1:0] sum,
     output logic         cout
 );
@@ -105,9 +107,15 @@ module ripple_carry_adder #(parameter W = 4) (
     //   用 generate-for 逐位生成。
     genvar i;
     generate
-        // for (...) begin : gen_fa
-        //     full_adder fa (...);
-        // end
+        for (i = 0; i < W; i = i + 1) begin : gen_fa
+            full_adder fa (
+                .a(a[i]),
+                .b(b[i]),
+                .cin(carry[i]),
+                .sum(sum[i]),
+                .cout(carry[i + 1])
+            );
+        end
     endgenerate
 
     assign cout = carry[W];
@@ -118,7 +126,7 @@ endmodule
 // 共阳七段译码: hex -> seg[6:0]={g,f,e,d,c,b,a}, 段低有效 (与 common 版一致)
 //====================================================================
 module sevenseg (
-    input  logic [3:0] hex,
+    input  wire [3:0] hex,
     output logic [6:0] seg
 );
     always_comb
