@@ -1,0 +1,38 @@
+# -------------------------------------------------------------------------- #
+# Lab 6 工程 (DE1-SoC / Cyclone V 5CSEMA5F31C6)
+#
+# Lab 6 是【纯仿真】Lab (官方明确不下板), 所以本工程:
+#   * 没有上板顶层、没有引脚约束 —— 顶层实体直接设为被测单元 alu
+#   * 目的是在 Quartus 里一键跑 NativeLink RTL 仿真 (Tools -> Run Simulation Tool)
+#     Questa 会把 alu.sv + tb_lab6.sv 一起编译并运行 tb_lab6
+#
+# 主验证方式仍是命令行:  cd lab6 && bash run.sh   (一条命令跑 3 遍:
+#   tb_lab6 穷举 / ALU_test 官方骨架 / bad_ALU 调试)。
+# run.sh 才能跑 ALU_test.v (它用 $readmemh 读 testvectors_hex.txt,
+# 相对路径在 NativeLink 的仿真工作目录下会找不到, 故不纳入本工程)。
+# -------------------------------------------------------------------------- #
+
+# 器件与顶层 (顶层 = 被测 ALU; 本工程不下载, 只为仿真)
+set_global_assignment -name FAMILY "Cyclone V"
+set_global_assignment -name DEVICE 5CSEMA5F31C6
+set_global_assignment -name TOP_LEVEL_ENTITY alu
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 25.1STD.0
+set_global_assignment -name LAST_QUARTUS_VERSION "25.1std.0 Lite Edition"
+
+# 源文件 (被测单元; testbench 通过下面的 EDA 配置引入, 不作综合源)
+set_global_assignment -name SYSTEMVERILOG_FILE alu.sv
+
+# 无引脚约束: 未用引脚三态, 交由 fitter 自动分配 (本工程只仿真不下载)
+set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"
+
+# ---------------- 仿真 (Questa Altera SystemVerilog, tb_lab6) ----------------
+set_global_assignment -name EDA_SIMULATION_TOOL "Questa Altera FPGA (SystemVerilog)"
+set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "SYSTEMVERILOG HDL" -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH tb_lab6 -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_NAME tb_lab6 -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME u8 -section_id tb_lab6
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_lab6 -section_id tb_lab6
+set_global_assignment -name EDA_TEST_BENCH_FILE tb_lab6.sv -section_id tb_lab6
