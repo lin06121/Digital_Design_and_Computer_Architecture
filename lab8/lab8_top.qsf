@@ -1,0 +1,92 @@
+# -------------------------------------------------------------------------- #
+# Lab 8 工程 (DE1-SoC / Cyclone V 5CSEMA5F31C6)
+#
+# 顶层 = top (MIPS 处理器 + 7 段蛇 + Part2 开关调速)。
+# 主验证方式:  cd lab8 && bash run.sh   (三遍 Questa 全 PASS)。
+# 本工程用于 Quartus 综合/下载; 引脚取自 manual Table 3-5/3-6/3-7 (见
+# common/de1soc_pins.qsf)。注意 top.v 只用 KEY(单 bit = KEY[0]) 与 SW[1:0]。
+#
+# 汇编内存 dump (insmem_h.txt / datamem_h.txt) 不被列为源文件—— 它们由
+# $readmemh 在综合/运行时按相对路径(工程目录 lab8/)读入, 不在文件列表里。
+# -------------------------------------------------------------------------- #
+
+set_global_assignment -name FAMILY "Cyclone V"
+set_global_assignment -name DEVICE 5CSEMA5F31C6
+set_global_assignment -name TOP_LEVEL_ENTITY top
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 25.1STD.0
+set_global_assignment -name LAST_QUARTUS_VERSION "25.1std.0 Lite Edition"
+
+# 源文件 (顶层 + MIPS 各子模块)
+set_global_assignment -name VERILOG_FILE top.v
+set_global_assignment -name VERILOG_FILE MIPS.v
+set_global_assignment -name VERILOG_FILE ALU.v
+set_global_assignment -name VERILOG_FILE ControlUnit.v
+set_global_assignment -name VERILOG_FILE InstructionMemory.v
+set_global_assignment -name VERILOG_FILE DataMemory.v
+set_global_assignment -name VERILOG_FILE RegisterFile.v
+set_global_assignment -name VERILOG_FILE clockdiv.v
+
+# 未用引脚三态 (安全起见)
+set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"
+
+# ------------------------- 引脚约束 -------------------------
+# 时钟
+set_location_assignment PIN_AF14 -to CLOCK_50
+
+# 滑动开关 SW[1:0] (仅用两档, 其余引脚不用)
+set_location_assignment PIN_AB12 -to SW[0]
+set_location_assignment PIN_AC12 -to SW[1]
+
+# 复位按键 KEY[0] (低有效; top.v 顶层端口为单 bit KEY)
+set_location_assignment PIN_AA14 -to KEY
+
+# 七段数码管 HEX0~HEX5 (共阳, 段码低有效)
+# HEX0
+set_location_assignment PIN_AE26 -to HEX0[0]
+set_location_assignment PIN_AE27 -to HEX0[1]
+set_location_assignment PIN_AE28 -to HEX0[2]
+set_location_assignment PIN_AG27 -to HEX0[3]
+set_location_assignment PIN_AF28 -to HEX0[4]
+set_location_assignment PIN_AG28 -to HEX0[5]
+set_location_assignment PIN_AH28 -to HEX0[6]
+# HEX1
+set_location_assignment PIN_AJ29 -to HEX1[0]
+set_location_assignment PIN_AH29 -to HEX1[1]
+set_location_assignment PIN_AH30 -to HEX1[2]
+set_location_assignment PIN_AG30 -to HEX1[3]
+set_location_assignment PIN_AF29 -to HEX1[4]
+set_location_assignment PIN_AF30 -to HEX1[5]
+set_location_assignment PIN_AD27 -to HEX1[6]
+# HEX2
+set_location_assignment PIN_AB23 -to HEX2[0]
+set_location_assignment PIN_AE29 -to HEX2[1]
+set_location_assignment PIN_AD29 -to HEX2[2]
+set_location_assignment PIN_AC28 -to HEX2[3]
+set_location_assignment PIN_AD30 -to HEX2[4]
+set_location_assignment PIN_AC29 -to HEX2[5]
+set_location_assignment PIN_AC30 -to HEX2[6]
+# HEX3
+set_location_assignment PIN_AD26 -to HEX3[0]
+set_location_assignment PIN_AC27 -to HEX3[1]
+set_location_assignment PIN_AD25 -to HEX3[2]
+set_location_assignment PIN_AC25 -to HEX3[3]
+set_location_assignment PIN_AB28 -to HEX3[4]
+set_location_assignment PIN_AB25 -to HEX3[5]
+set_location_assignment PIN_AB22 -to HEX3[6]
+# HEX4
+set_location_assignment PIN_AA24 -to HEX4[0]
+set_location_assignment PIN_Y23  -to HEX4[1]
+set_location_assignment PIN_Y24  -to HEX4[2]
+set_location_assignment PIN_W22  -to HEX4[3]
+set_location_assignment PIN_W24  -to HEX4[4]
+set_location_assignment PIN_V23  -to HEX4[5]
+set_location_assignment PIN_W25  -to HEX4[6]
+# HEX5
+set_location_assignment PIN_V25  -to HEX5[0]
+set_location_assignment PIN_AA28 -to HEX5[1]
+set_location_assignment PIN_Y27  -to HEX5[2]
+set_location_assignment PIN_AB27 -to HEX5[3]
+set_location_assignment PIN_AB26 -to HEX5[4]
+set_location_assignment PIN_AA26 -to HEX5[5]
+set_location_assignment PIN_AA25 -to HEX5[6]

@@ -1,0 +1,14 @@
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 25.1std.0 Build 1129 10/21/2025 SC Lite Edition
+# Date created = October 03, 2026
+#
+# -------------------------------------------------------------------------- #
+
+QUARTUS_VERSION = "25.1"
+DATE = "October 03, 2026"
+
+# Revisions
+
+PROJECT_REVISION = "lab8_top"
